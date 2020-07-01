@@ -1,6 +1,28 @@
 presubmits:
   # Check that changes to promoter manifests are valid.
   kubernetes/k8s.io:
+  - name: pull-cip-vuln
+    annotations:
+      testgrid-create-test-group: 'true'
+      testgrid-dashboards: wg-k8s-infra-k8sio
+    decorate: true
+    skip_report: false
+    run_if_changed: 'k8s.gcr.io/((images/.*/images\.yaml)|(manifests/.*/promoter-manifest\.yaml))'
+    max_concurrency: 10
+    branches:
+    - ^master$
+    spec:
+      serviceAccountName: k8s-infra-gcr-promoter-scanning
+      containers:
+      - image: us.gcr.io/k8s-artifacts-prod/artifact-promoter/cip:20200328-v2.3.1-172-gfeb5dc0
+        command:
+        - cip
+        args:
+        # Pod Utilities already sets pwd to
+        # /home/prow/go/src/github.com/{{.Org}}/{{.Repo}}, so just '.' should
+        # suffice, but it's nice to be explicit.
+        - -thin-manifest-dir=/home/prow/go/src/github.com/kubernetes/k8s.io/k8s.gcr.io
+        - -use-service-account
   - name: pull-k8sio-cip
     annotations:
       testgrid-create-test-group: 'true'

@@ -17,7 +17,7 @@ presubmits:
       preset-dind-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20200623-2424179-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20200710-6b3b6fe-master
         command:
         - runner.sh
         args:
@@ -51,11 +51,14 @@ periodics:
     description: "Ends up running: make test-cmd test-integration"
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20200623-2424179-master
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20200710-6b3b6fe-master
       command:
       - runner.sh
       args:
       - ./hack/jenkins/test-dockerized.sh
+      env:
+      - name: SHORT
+        value: --short=false
       # docker-in-docker needs privileged mode
       securityContext:
         privileged: true

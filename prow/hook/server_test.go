@@ -23,11 +23,12 @@ import (
 	"strings"
 	"testing"
 
+	"k8s.io/test-infra/prow/githubeventserver"
 	"k8s.io/test-infra/prow/plugins"
 )
 
 func TestServeHTTPErrors(t *testing.T) {
-	metrics := NewMetrics()
+	metrics := githubeventserver.NewMetrics()
 	pa := &plugins.ConfigAgent{}
 	pa.Set(&plugins.Configuration{})
 

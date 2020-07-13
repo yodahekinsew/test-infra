@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-# Copyright 2016 The Kubernetes Authors.
+# Copyright 2020 The Kubernetes Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -o errexit
-set -o nounset
-set -o pipefail
-
-git clone https://github.com/kubernetes/test-infra
-./test-infra/jenkins/bootstrap.py "$@"
+.PHONY: generate
+generate:
+	python build-grid.py > kops-periodics-grid.yaml
+	python build-pipeline.py > kops-pipeline.yaml
